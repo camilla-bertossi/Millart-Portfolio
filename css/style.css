@@ -258,7 +258,9 @@ body[data-page="who-am-i"] {
   transform: rotate(8deg);
   cursor: grab;
   touch-action: none;
+  background: transparent;
 }
+
 
 .who-photo:active {
   cursor: grabbing;
