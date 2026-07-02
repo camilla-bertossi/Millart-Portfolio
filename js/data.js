@@ -130,12 +130,12 @@ const portfolioData = {
           titleAfter: 1,
           rowAlign: "center",
           images: [
-            `${GD}/posters-1.jpg`,
+            `${GD}/posters-1.jpeg`,
             `${GD}/posters-2.jpg`,
-            `${GD}/posters-3.png`,
-            `${GD}/posters-4.png`,
+            `${GD}/posters-3.jpg`,
+            `${GD}/posters-4.jpg`,
           ],
-          hero: `${GD}/posters-1.jpg`,
+          hero: `${GD}/posters-1.jpeg`,
           blocks: [
             {
               type: "text",
@@ -145,14 +145,14 @@ const portfolioData = {
             {
               type: "pair",
               layout: "image-left",
-              image: `${GD}/posters-4.png`,
+              image: `${GD}/posters-4.jpg`,
               text:
                 "Poster dedicato a Fight Club, costruito attraverso una composizione frammentata, materica e volutamente caotica. Fotografie, testi, simboli e segni grafici richiamano i temi dell'identità, della ribellione e del conflitto interiore, restituendo l'atmosfera disturbante e anticonformista del film.",
             },
             {
               type: "pair",
               layout: "image-right",
-              image: `${GD}/posters-3.png`,
+              image: `${GD}/posters-3.jpg`,
               text:
                 "Poster ispirato alla serie Altered Carbon, incentrato sul rapporto tra corpo, tecnologia e identità. La sovrapposizione di figure, trasparenze e annotazioni grafiche richiama l'idea di un corpo sostituibile e di una memoria trasferibile, creando un'immagine fredda, stratificata e futuristica.",
             },
@@ -171,12 +171,12 @@ const portfolioData = {
           titleAfter: 3,
           rowAlign: "center",
           images: [
-            `${IL}/laf-1.png`,
-            `${IL}/laf-2.png`,
-            `${IL}/laf-3.png`,
-            `${IL}/laf-4.png`,
+            `${IL}/laf-1.jpg`,
+            `${IL}/laf-2.jpg`,
+            `${IL}/laf-3.jpg`,
+            `${IL}/laf-4.jpg`,
           ],
-          hero: `${IL}/laf-2.png`,
+          hero: `${IL}/laf-2.jpg`,
           blocks: [
             {
               type: "text",
@@ -185,9 +185,9 @@ const portfolioData = {
             },
           ],
           gallery: [
-            { src: `${IL}/laf-1.png`, width: 220, top: 24, left: 64, rotation: -6 },
-            { src: `${IL}/laf-3.png`, width: 240, top: 96, left: 210, rotation: 4 },
-            { src: `${IL}/laf-4.png`, width: 210, top: 48, left: 350, rotation: -3 },
+            { src: `${IL}/laf-1.jpg`, width: 220, top: 24, left: 64, rotation: -6 },
+            { src: `${IL}/laf-3.jpg`, width: 240, top: 96, left: 210, rotation: 4 },
+            { src: `${IL}/laf-4.jpg`, width: 210, top: 48, left: 350, rotation: -3 },
           ],
         },
         {
@@ -295,7 +295,7 @@ const portfolioData = {
           rowAlign: "center",
           images: [
             `${DV}/100km-adamello-1.jpg`,
-            `${DV}/100km-adamello-2.png`,
+            `${DV}/100km-adamello-2.jpg`,
           ],
           hero: `${DV}/100km-adamello-1.jpg`,
           blocks: [
@@ -306,7 +306,7 @@ const portfolioData = {
             },
           ],
           gallery: [
-            { src: `${DV}/100km-adamello-2.png`, width: 360, top: 48, left: 100, rotation: -2 },
+            { src: `${DV}/100km-adamello-2.jpg`, width: 360, top: 48, left: 100, rotation: -2 },
           ],
           galleryExtra: [`${DV}/100km-adamello-extra.png`],
         },
@@ -316,10 +316,10 @@ const portfolioData = {
           titleAfter: 2,
           rowAlign: "center",
           images: [
-            `${DV}/how-to-reset-1.png`,
-            `${DV}/how-to-reset-2.png`,
+            `${DV}/how-to-reset-1.jpg`,
+            `${DV}/how-to-reset-2.jpg`,
           ],
-          hero: `${DV}/how-to-reset-2.png`,
+          hero: `${DV}/how-to-reset-2.jpg`,
           blocks: [
             {
               type: "text",
@@ -328,7 +328,7 @@ const portfolioData = {
             },
           ],
           gallery: [
-            { src: `${DV}/how-to-reset-1.png`, width: 340, top: 56, left: 120, rotation: 3 },
+            { src: `${DV}/how-to-reset-1.jpg`, width: 340, top: 56, left: 120, rotation: 3 },
           ],
           galleryExtra: [`${DV}/how-to-reset-extra.png`],
         },
@@ -339,8 +339,8 @@ const portfolioData = {
           rowAlign: "center",
           images: [
             `${DV}/restare-1.jpg`,
-            `${DV}/restare-2.png`,
-            `${DV}/restare-3.png`,
+            `${DV}/restare-2.jpg`,
+            `${DV}/restare-3.jpg`,
           ],
           hero: `${DV}/restare-1.jpg`,
           blocks: [
@@ -351,8 +351,8 @@ const portfolioData = {
             },
           ],
           gallery: [
-            { src: `${DV}/restare-2.png`, width: 300, top: 32, left: 72, rotation: -4 },
-            { src: `${DV}/restare-3.png`, width: 280, top: 96, left: 250, rotation: 5 },
+            { src: `${DV}/restare-2.jpg`, width: 300, top: 32, left: 72, rotation: -4 },
+            { src: `${DV}/restare-3.jpg`, width: 280, top: 96, left: 250, rotation: 5 },
           ],
           galleryExtra: [`${DV}/restare-extra.png`],
         },

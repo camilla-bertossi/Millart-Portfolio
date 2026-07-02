@@ -63,7 +63,7 @@ if (document.body.dataset.page === "who-am-i" && window.gsap && window.ScrollTri
     });
   });
 
-  const centerBand = 115;
+  const centerBand = () => (window.innerWidth <= 768 ? 72 : 115);
 
   // Ogni lettera "si accende" (diventa scura) quando passa per il centro
   // schermo, e RESTA scura finché è ancora visibile a schermo.
@@ -82,7 +82,7 @@ if (document.body.dataset.page === "who-am-i" && window.gsap && window.ScrollTri
         const letterCenter = letterBox.top + letterBox.height / 2;
         const distanceFromCenter = Math.abs(letterCenter - screenCenter);
 
-        if (distanceFromCenter < centerBand) {
+        if (distanceFromCenter < centerBand()) {
           letter.dataset.activated = "true";
         }
       }
@@ -109,7 +109,10 @@ if (document.body.dataset.page === "who-am-i" && window.gsap && window.ScrollTri
     onLeaveBack: updateCenterHighlight,
   });
 
-  window.addEventListener("resize", updateCenterHighlight);
+  window.addEventListener("resize", () => {
+    updateCenterHighlight();
+    ScrollTrigger?.refresh();
+  });
   updateCenterHighlight();
 
   // Foto trascinabile con il mouse/touch (GSAP Draggable).

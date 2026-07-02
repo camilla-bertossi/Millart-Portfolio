@@ -48,13 +48,23 @@
     ScrollTrigger?.refresh();
   }
 
+  let resizeTimer = null;
+
+  function handleResize() {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      updateGalleryLayout(project);
+      ScrollTrigger?.refresh();
+    }, 150);
+  }
+
   if (document.readyState === "complete") {
     initProjectMotion();
   } else {
     window.addEventListener("load", initProjectMotion, { once: true });
   }
 
-  window.addEventListener("resize", () => ScrollTrigger?.refresh());
+  window.addEventListener("resize", handleResize);
 })();
 
 function findProject(projectId) {
@@ -107,8 +117,15 @@ function renderBlocks(container, project) {
   });
 }
 
+function getGalleryLayoutScale() {
+  const referenceWidth = 920;
+  const availableWidth = Math.min(window.innerWidth - 48, referenceWidth);
+  return Math.max(0.42, Math.min(1, availableWidth / referenceWidth));
+}
+
 function resolveGalleryItems(project) {
   const items = [...(project.gallery || [])];
+  const scale = getGalleryLayoutScale();
 
   (project.galleryExtra || []).forEach((src) => {
     items.push({ src });
@@ -116,9 +133,9 @@ function resolveGalleryItems(project) {
 
   return items.map((item, index) => ({
     src: item.src,
-    width: item.width || 170,
-    top: item.top ?? 24 + Math.floor(index / 6) * 118,
-    left: item.left ?? 36 + (index % 6) * 132,
+    width: Math.round((item.width || 170) * scale),
+    top: Math.round((item.top ?? 24 + Math.floor(index / 6) * 118) * scale),
+    left: Math.round((item.left ?? 36 + (index % 6) * 132) * scale),
     rotation: item.rotation ?? ((index % 5) - 2) * 2.8,
     large: Boolean(item.large),
   }));
@@ -165,6 +182,34 @@ function renderGallery(container, project) {
   container.appendChild(gallery);
 }
 
+function updateGalleryLayout(project) {
+  const gallery = document.querySelector(".project-gallery");
+  if (!gallery) {
+    return;
+  }
+
+  const items = resolveGalleryItems(project);
+  const wraps = gallery.querySelectorAll(".project-gallery-item");
+
+  const maxBottom = items.reduce((max, item) => {
+    const estimatedHeight = item.width * 1.25;
+    return Math.max(max, item.top + estimatedHeight);
+  }, 0);
+
+  gallery.style.minHeight = `${maxBottom + 140}px`;
+
+  wraps.forEach((wrap, index) => {
+    const item = items[index];
+    if (!item) {
+      return;
+    }
+
+    wrap.style.width = `${item.width}px`;
+    wrap.style.top = `${item.top}px`;
+    wrap.style.left = `${item.left}px`;
+  });
+}
+
 function setupTitleScroll(titleEl) {
   const hero = document.getElementById("project-hero");
   const page = document.querySelector(".project-page");
@@ -174,36 +219,70 @@ function setupTitleScroll(titleEl) {
     return;
   }
 
-  const getPositions = () => {
-    const pageTop = page.getBoundingClientRect().top + window.scrollY;
-    const heroRect = hero.getBoundingClientRect();
-    const anchorRect = anchor.getBoundingClientRect();
-    const titleHeight = titleEl.offsetHeight;
+  const mobileQuery = window.matchMedia("(max-width: 768px)");
 
-    const startTop =
-      heroRect.top + window.scrollY - pageTop + heroRect.height * 0.5 - titleHeight * 0.5;
-    const endTop = anchorRect.top + window.scrollY - pageTop - titleHeight - 40;
+  function applyTitleLayout() {
+    if (mobileQuery.matches) {
+      gsap.set(titleEl, { clearProps: "top" });
+      return null;
+    }
 
-    return {
-      startTop,
-      endTop,
-      travel: Math.max(endTop - startTop, 0),
-    };
+    const positions = getTitlePositions(hero, page, anchor, titleEl);
+    gsap.set(titleEl, { top: positions.startTop });
+    return positions;
+  }
+
+  let titleTween = null;
+
+  function buildTitleScroll() {
+    if (titleTween) {
+      titleTween.scrollTrigger?.kill();
+      titleTween.kill();
+      titleTween = null;
+    }
+
+    const positions = applyTitleLayout();
+    if (!positions) {
+      return;
+    }
+
+    titleTween = gsap.to(titleEl, {
+      top: () => getTitlePositions(hero, page, anchor, titleEl).endTop,
+      ease: "none",
+      scrollTrigger: {
+        trigger: hero,
+        start: "top top",
+        end: () => `+=${getTitlePositions(hero, page, anchor, titleEl).travel}`,
+        scrub: 0.45,
+        invalidateOnRefresh: true,
+      },
+    });
+  }
+
+  buildTitleScroll();
+
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", buildTitleScroll);
+  } else {
+    mobileQuery.addListener(buildTitleScroll);
+  }
+}
+
+function getTitlePositions(hero, page, anchor, titleEl) {
+  const pageTop = page.getBoundingClientRect().top + window.scrollY;
+  const heroRect = hero.getBoundingClientRect();
+  const anchorRect = anchor.getBoundingClientRect();
+  const titleHeight = titleEl.offsetHeight;
+
+  const startTop =
+    heroRect.top + window.scrollY - pageTop + heroRect.height * 0.5 - titleHeight * 0.5;
+  const endTop = anchorRect.top + window.scrollY - pageTop - titleHeight - 40;
+
+  return {
+    startTop,
+    endTop,
+    travel: Math.max(endTop - startTop, 0),
   };
-
-  gsap.set(titleEl, { top: getPositions().startTop });
-
-  gsap.to(titleEl, {
-    top: () => getPositions().endTop,
-    ease: "none",
-    scrollTrigger: {
-      trigger: hero,
-      start: "top top",
-      end: () => `+=${getPositions().travel}`,
-      scrub: 0.45,
-      invalidateOnRefresh: true,
-    },
-  });
 }
 
 function initGalleryDraggable() {
